@@ -8,6 +8,7 @@ import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Navigation from '../Navigation/Navigation';
+import PageNotFound from '../PageNotFound/PageNotFound';
 
 function App() {
   return (
@@ -34,6 +35,9 @@ function App() {
           </Route>
           <Route path="/navigation">
             <Navigation />
+          </Route>
+          <Route path="*">
+            <PageNotFound />
           </Route>
         </Switch>
       </div>

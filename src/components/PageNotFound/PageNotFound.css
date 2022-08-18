@@ -21,14 +21,14 @@
     line-height: 1.25;
     text-align: center;
 }
-.notfound__link {
-    text-align: center;
+.notfound__button {
+    background: none;
+    border: none;
     margin-bottom: 30px;
     font-weight: 400;
     font-size: 12px;
     line-height: 1.25;
     color: #2BE080;
-    text-decoration: none;
 }
 
 @media screen and (min-width: 768px) {
@@ -45,9 +45,14 @@
         font-size: 14px;
         line-height: 1.21;
     }
+    .notfound__button {
+        margin-bottom: 222px;
+        font-size: 14px;
+        line-height: 1.21; 
+    }
 }
 @media screen and (min-width: 1280px) {
-    .notfound__link {
+    .notfound__button {
         margin-bottom: 60px;
     }  
 }
