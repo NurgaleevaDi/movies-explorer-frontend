@@ -1,0 +1,9 @@
+.movies_saved {
+    display: grid;
+    grid-template-rows: 74px 272px 1fr 312px;
+}
+@media screen and (min-width: 1280px) {
+    .movies_saved {
+        grid-template-rows: 74px 222px 1fr 172px;  
+    }
+}

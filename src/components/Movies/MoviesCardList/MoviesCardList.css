@@ -1,0 +1,26 @@
+.movies-cardlist {
+    margin: 0 auto;
+    display: grid;
+    row-gap: 16px;
+    column-gap: 16px;
+    grid-template-columns: repeat(auto-fit, 300px);
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+@media screen and (min-width: 768px) {
+    .movies-cardlist{
+        grid-template-columns: repeat(2, 339px);
+        row-gap: 36px;
+        column-gap: 30px;
+        margin-top: 80px;
+    }
+}
+@media screen and (min-width: 1280px) {
+    .movies-cardlist {
+        grid-template-columns: repeat(3, 364px);
+        row-gap: 30px;
+        column-gap: 24px;
+    } 
+}

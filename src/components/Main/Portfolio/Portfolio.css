@@ -1,0 +1,75 @@
+.portfolio__menu-title {
+    margin: 0;
+    margin-bottom: 40px;
+    font-weight: 400;   
+    font-size: 14px;
+    line-height: 1.43;
+    color: #A0A0A0;
+}
+.portfolio__menu-projects {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.portfolio__project-link {
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 47px;
+    color: black;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.56;
+    letter-spacing: -0.04em;
+}
+.portfolio__link-container {
+    border-bottom: 1px solid #E6E6E6; 
+}
+.portfolio__link-container:last-child {
+    border: none; 
+    margin-bottom: 70px;
+}
+.portfolio__arrow {
+    font-size: 18px;
+    line-height: 1.56;
+    letter-spacing: -0.04em;
+}
+
+@media screen and (min-width: 768px) {
+    .portfolio__menu-title {
+        margin-top: 90px;
+        margin-bottom: 50px;
+        font-size: 18px;
+        line-height: 1.11;
+    }
+    .portfolio__project-link {
+        font-size: 28px;
+        line-height: 1.79;
+        min-height: 69px;
+    }
+    .portfolio__arrow {
+        font-size: 28px;
+        line-height: 2.14;
+    }
+    .portfolio__link-container:last-child { 
+        margin-bottom: 90px;
+    }
+}
+@media screen and (min-width: 1280px) {
+    .portfolio__menu-title {
+        margin-top: 100px;
+    }
+    .portfolio__project-link {
+        font-size: 30px;
+        line-height: 1.67;
+        min-height: 89px;
+    }
+    .portfolio__arrow {
+        font-size: 30px;
+        line-height: 2;
+    }
+    .portfolio__link-container:last-child { 
+        margin-bottom: 125px;
+    }
+}

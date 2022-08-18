@@ -1,0 +1,117 @@
+.about-me__resume {
+    margin-top: 60px
+}
+.about-me__img {
+    margin: auto;
+    min-height: 352px;
+    max-width: 284px;
+    background-image: url('../../../images/student.jpeg');
+    background-size: 100%;
+    background-position: contain;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+}
+.about-me__title {
+    margin: 0;
+    margin-top: 40px;
+    font-size: 30px;
+    line-height: 1.2;
+    font-weight: 400;
+    letter-spacing: -0.04em;
+}
+.about-me__subtitle {
+    margin: 0;
+    margin-top: 20px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 1.45;  
+}
+.about-me__text {
+    margin: 0;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 1.45;
+}
+.about-me__links {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 70px;
+    list-style: none;
+    display: flex;
+}
+.about-me__link {
+    text-decoration: none;
+    margin-right: 26px;
+    color: #000000;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.21;
+}
+
+@media screen and (min-width: 768px) {
+    .about-me__resume {
+        margin-top: 66px;
+        display: grid;
+        grid-template-columns: auto 255px;
+        column-gap: 49px;
+        grid-template-areas: 
+            "info avatar"
+            "links avatar"
+            ;
+    }
+    .about-me__img {
+        min-width: 255px;
+        min-height: 307px;
+        grid-area: avatar;
+    }
+    .about__info {
+        grid-area: info;
+    }
+    .about-me__title {
+        margin: 0;
+        font-size: 40px;
+        line-height: 1;
+    }
+    .about-me__subtitle {
+        margin-top: 16px;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+    .about-me__text {
+        margin-bottom: 87px;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+    .about-me__text {
+        grid-area: links;
+        margin: 0;
+    }
+}
+@media screen and (min-width: 1280px) {
+    .about-me__resume {
+        grid-template-columns: auto 270px;
+        column-gap: 270px;
+    }
+    .about-me__img {
+        min-width: 270px;
+        min-height: 327px;
+    }
+    .about-me__title {
+        font-size: 50px;
+        line-height: 1.16;
+    }
+    .about-me__subtitle {
+        margin-top: 18px;
+        font-size: 18px;
+        line-height: 1.11;
+    }
+    .about-me__text {
+        margin-top: 26px;
+        margin-bottom: 99px;
+        font-size: 14px;
+        line-height: 1.57;
+    }
+}

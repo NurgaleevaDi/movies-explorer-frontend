@@ -1,0 +1,55 @@
+.header__menu {
+    margin-right: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header__register-link {
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 1.6;
+    color: #FFFFFF;
+    text-decoration: none;
+    margin-right: 14px;
+}
+.header__login-link-container {
+    min-width: 54px;
+    min-height: 26px;
+    background-color: #2BE080;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header__login-link {
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 1.6; 
+    color:#000000;
+    text-decoration: none;
+    z-index: 10;
+}
+
+@media screen and (min-width: 768px) {
+    .header__menu {
+        margin-right: 30px;
+    }
+    .header__register-link {
+        font-size: 12px;
+        line-height: 1.33;
+    }
+    .header__login-link-container {
+        min-width: 76px;
+        min-height: 32px;
+    }
+    .header__login-link {
+        font-size: 12px;
+        line-height: 1.33;
+    }
+}
+@media screen and (min-width: 1280px) {
+    .header__login-link-container {
+        min-width: 76px;
+        min-height: 32px;
+    }
+}

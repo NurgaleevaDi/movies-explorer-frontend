@@ -1,0 +1,112 @@
+.sectionMain__title {
+    margin: 0;
+    padding-top: 70px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid black;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.21;
+    letter-spacing: -0.04em;
+}
+.sectionMain__subtitle {
+    margin: 0;
+    margin-top: 60px;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.21;
+    letter-spacing: -0.04em;
+}
+.sectionMain__text {
+    margin: 0;
+    margin-top: 16px;
+    font-size: 11px;
+    line-height: 1.45;
+    text-align: justify;
+}
+.progress-bar {
+    width: 100%;
+    margin-top: 60px;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    font-size: 11px;
+    line-height: 1.18;
+    text-align: center;
+    min-height: 35px;
+  
+}
+.progress-bar__text {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    background-color: #F2F2F2;
+}
+.progress-bar__text_green {
+    margin: 0;
+    background-color: #2BE080;
+}
+.progress-bar__text_eng {
+    margin: 0;
+    margin-top: 10px;
+    padding-bottom: 70px;
+    font-size: 11px;
+    line-height: 1.16;
+    color: #A0A0A0;
+}
+
+@media screen and (min-width: 768px) {
+    .sectionMain__title {
+        padding-top: 90px;
+        margin-bottom: 23px;
+        font-size: 22px;
+        line-height: 1.23;
+    }
+    .sectionMain__item {
+       display: grid; 
+       grid-auto-flow: column;
+       grid-template-columns: 1fr 1fr; 
+       grid-column-gap: 30px;
+    }
+    .sectionMain__subtitle {
+        margin-top: 70px;
+        font-size: 20px;
+    }
+    .sectionMain__text {
+        font-size: 12px;
+        margin-top: 22px;
+        text-align: left;
+    }
+    .progress-bar {
+        grid-template-columns: 140px 1fr;
+    }
+    .progress-bar__text {
+        font-size: 14px;
+    }
+    .progress-bar__text_eng {
+        font-size: 14px;
+        margin-top: 14px;
+        padding-bottom: 90px;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .sectionMain__title {
+        padding-top: 110px;
+    }
+    .sectionMain__item {
+        grid-column-gap: 40px;
+    }
+    .sectionMain__text {
+        font-size: 14px;
+        margin-top: 26px;
+    }
+    .progress-bar{
+        margin-top: 110px;
+        grid-template-columns: 248px 1fr;
+    }
+    .progress-bar__text_eng {
+        padding-bottom: 110px;
+    }
+}
