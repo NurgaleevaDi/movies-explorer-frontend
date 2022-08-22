@@ -11,6 +11,10 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Navigation from '../Navigation/Navigation';
 import PageNotFound from '../PageNotFound/PageNotFound';
+import InfoTooltip from '../InfoTooltip/InfoTooltip.js';
+
+
+
 
 
 function App() {

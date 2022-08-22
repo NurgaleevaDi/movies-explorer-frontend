@@ -48,6 +48,10 @@
     padding: 0;
     margin-right: 19px;
 }
+.movies__button:disabled{
+    opacity: 0.3;
+    cursor: default;
+}
 .movies__error-message {
     grid-area: span;
     margin-left: 26px;
