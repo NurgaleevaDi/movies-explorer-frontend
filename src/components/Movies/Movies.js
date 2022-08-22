@@ -5,7 +5,8 @@ import MoviesCardList from "./MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import SearchForm from "../Movies/SearchForm/SearchForm"
 
-function Movies() {
+function Movies(props) {
+    console.log('Movies props ', props);
     const [openMenu, setOpenMenu] = useState(false);
 
     function handleOpenMenu() {
@@ -24,7 +25,9 @@ function Movies() {
                 openMenu={handleOpenMenu}
                 textColor="navigation__menu-navlink_black"
             />
-            <SearchForm />
+            <SearchForm
+                onSearchFormClick={props.onSearchFormClick}
+            />
             <MoviesCardList />
             <div className="movies__more">
                 <button className="movies__btn-more">

@@ -2,17 +2,24 @@
     margin-top: 80px;
 }
 .movies__input-conteiner {
-    min-height: 72px;
-    display: flex;
-    justify-content: space-between;
+    /* min-height: 72px; */
+    /* display: flex;
+    justify-content: space-between; */
+    display: grid;
+    grid-template-areas: 
+        'input button'
+        'span span';
     box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.08);
     border-radius: 9px;
     background-color:  #FDFDFD;
 }
 .movies__img-search {
+    /* grid-area: img; */
     display: none;
 }
 .movies__input {
+    grid-area: input;
+    /* min-height: 72px; */
     border: none;
     font-weight: 400;
     font-size: 14px;
@@ -21,13 +28,33 @@
     padding: 0;
     margin-left: 16px;
     background-color: #FDFDFD;
+    outline: none;
+    padding-left: 10px;
+    margin-right: 10px;
+    border-radius: 4px
 }
+/* .movies__input:valid {
+    border: 1px solid green;
+}
+.movies__input:invalid {
+    border: 1px solid red;
+} */
 .movies__button {
+    grid-area: button;
+    min-height: 72px;
     border: none;
     background: none;
     width: 34px;
     padding: 0;
     margin-right: 19px;
+}
+.movies__error-message {
+    grid-area: span;
+    margin-left: 26px;
+    /* margin-bottom: 26px; */
+    font-size: 12px;
+    line-height: 1.2;
+    color: red;
 }
 .movies__shorts-conteiner {
     display: flex;

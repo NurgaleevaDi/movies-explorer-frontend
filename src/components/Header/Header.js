@@ -7,7 +7,7 @@ import Unauthorized from "../Unauthorized/Unauthorized";
 
 function Header(props) {
     const [openMenu, setOpenMenu] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     function handleOpenMenu() {
         setOpenMenu(true);
@@ -15,9 +15,9 @@ function Header(props) {
     function handleCloseMenu() {
         setOpenMenu(false);
     }
-    function handleLogged() {
-        setIsLoggedIn(false);
-    }
+    // function handleLogged() {
+    //     setIsLoggedIn(false);
+    // }
     console.log(isLoggedIn);
 
     return(

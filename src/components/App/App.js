@@ -1,4 +1,6 @@
 import { Route, Switch } from 'react-router-dom';
+
+import MoviesApi from '../../utils/MoviesApi.js'
 // import './App.css';
 
 import Main from '../Main/Main';
@@ -10,7 +12,19 @@ import Login from '../Login/Login';
 import Navigation from '../Navigation/Navigation';
 import PageNotFound from '../PageNotFound/PageNotFound';
 
+
 function App() {
+  function handleGetMovies() {
+    console.log('test handleGetMovies');
+    MoviesApi.getMovies()
+    .then((data)=> {
+      console.log('data get movies', data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+ 
   return (
     <body> 
       <div className="page"> 
@@ -19,7 +33,9 @@ function App() {
             <Main />
           </Route>
           <Route path="/movies">
-            <Movies />
+            <Movies
+              onSearchFormClick={handleGetMovies} 
+            />
           </Route>
           <Route path="/saved-movies">
             <SavedMovies />
