@@ -6,39 +6,45 @@ import film3 from "../../../images/film3.jpg";
 import film4 from "../../../images/film4.jpg";
 import film5 from "../../../images/film5.jpg";
 
-function MoviesCardList() {
+function MoviesCardList(props) {
     return(
         <div className="movies-cardlist">
-            <MoviesCard 
+            {props.films.map((film) => (
+                <MoviesCard 
+                    key={film.id}
+                    {...film}
+                />
+            ))}
+            {/* <MoviesCard 
                 name="33 слова о дизайне"
                 time="1ч 47м"
                 src={film1}
                 lableClassName="movies-card__btn"
-            />
-             <MoviesCard 
+            /> */}
+             {/* <MoviesCard 
                 name="33 слова о дизайне"
                 time="1ч 47м"
                 src={film2}
                 lableClassName="movies-card__btn"
-            />
-             <MoviesCard 
+            /> */}
+             {/* <MoviesCard 
                 name="33 слова о дизайне"
                 time="1ч 47м"
                 src={film3}
                 lableClassName="movies-card__btn movies-card__btn_active"
-            />
-             <MoviesCard 
+            /> */}
+             {/* <MoviesCard 
                 name="33 слова о дизайне"
                 time="1ч 47м"
                 src={film4}
                 lableClassName="movies-card__btn"
-            />
-             <MoviesCard 
+            /> */}
+             {/* <MoviesCard 
                 name="33 слова о дизайне"
                 time="1ч 47м"
                 src={film5}
                 lableClassName="movies-card__btn movies-card__btn_active"
-            />
+            /> */}
         </div>
     )
 }

@@ -21,15 +21,14 @@ function SearchForm(props) {
     }
     function handleSubmit(e) {
         e.preventDefault();
-        console.log('submit!');
-        props.onSearchFormClick();
         if(!(isValidFilm)) {
-            setErrorFilm("Нужно ввести ключевое слово");
             setOpenPopup(true);
+            setErrorFilm("Нужно ввести ключевое слово");
         } else {
-            setErrorFilm("");
+            props.onSearchFormClick();
         }
     }
+
     return (
         <section className="movies__search">
             <div className="movies__search-block">

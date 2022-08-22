@@ -1,4 +1,5 @@
 import { Route, Switch } from 'react-router-dom';
+import { useState } from 'react';
 
 import MoviesApi from '../../utils/MoviesApi.js'
 // import './App.css';
@@ -11,18 +12,24 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Navigation from '../Navigation/Navigation';
 import PageNotFound from '../PageNotFound/PageNotFound';
-import InfoTooltip from '../InfoTooltip/InfoTooltip.js';
-
-
-
 
 
 function App() {
+  const [films, setFilms] = useState([]);
+
   function handleGetMovies() {
-    console.log('test handleGetMovies');
     MoviesApi.getMovies()
     .then((data)=> {
       console.log('data get movies', data);
+      setFilms(
+        data.map((data) => ({
+          name: data.nameRU,
+          src: `https://api.nomoreparties.co${data.image.url}`,
+          time: data.duration,
+          id: data.id,
+        }))
+      )
+      console.log('films ', films);
     })
     .catch((err) => {
       console.log(err);
@@ -38,7 +45,8 @@ function App() {
           </Route>
           <Route path="/movies">
             <Movies
-              onSearchFormClick={handleGetMovies} 
+              onSearchFormClick={handleGetMovies}
+              films={films}
             />
           </Route>
           <Route path="/saved-movies">

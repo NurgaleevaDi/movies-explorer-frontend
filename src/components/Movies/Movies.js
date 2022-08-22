@@ -28,7 +28,9 @@ function Movies(props) {
             <SearchForm
                 onSearchFormClick={props.onSearchFormClick}
             />
-            <MoviesCardList />
+            <MoviesCardList
+                films={props.films}
+            />
             <div className="movies__more">
                 <button className="movies__btn-more">
                     Еще
