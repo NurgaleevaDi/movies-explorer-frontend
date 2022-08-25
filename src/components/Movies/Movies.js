@@ -6,7 +6,7 @@ import Footer from "../Footer/Footer";
 import SearchForm from "../Movies/SearchForm/SearchForm"
 
 function Movies(props) {
-    console.log('Movies props ', props);
+    // console.log('Movies props ', props);
     const [openMenu, setOpenMenu] = useState(false);
 
     function handleOpenMenu() {
@@ -27,9 +27,13 @@ function Movies(props) {
             />
             <SearchForm
                 onSearchFormClick={props.onSearchFormClick}
+                films={props.films}
+                onChange={props.onChange}
+                onSubmit={props.onSubmit}
+                onChecked={props.onChecked}
             />
             <MoviesCardList
-                films={props.films}
+                films={props.searchFilms}
             />
             <div className="movies__more">
                 <button className="movies__btn-more">

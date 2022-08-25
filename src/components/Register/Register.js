@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import logo from "../../images/logo.svg";
 // import Input from "../Input/Input";
 
-function Register() {
+function Register(props) {
+    // console.log('Register props ', props);
     const [name, setName] = useState("");
     const [isValidName, setIsValidName] = useState(false);
     const [errorName, setErrorName] = useState("");
@@ -37,6 +38,7 @@ function Register() {
     }
     function handlePasswordChange(evt) {
         const input = evt.target;
+        console.log(input);
         setPassword(input.value);
         setIsValidPassword(input.validity.valid);
         if(!isValidPassword) {
@@ -45,6 +47,12 @@ function Register() {
             setErrorPassword("");
         }
     }
+    console.log('data ', name);
+    function handleSubmit(evt) {
+        evt.preventDefault();
+        props.handleRegister(email, password, name);
+    }
+
     return(
         <div className="register">
             <div className="register__header">
@@ -53,7 +61,7 @@ function Register() {
                 </Link>
                 <p className="register__title">Добро пожаловать!</p>
              </div>
-            <form className="register__form">
+            <form className="register__form" onSubmit={handleSubmit}>
                 <div className="input__container">
                     <p className="input__disription">Имя</p>
                     <input
@@ -69,7 +77,6 @@ function Register() {
                     />
                     <span className="input__error-message">{errorName}</span>
                 </div>
-                
                 <div className="input__container">
                     <p className="input__disription">E-mail</p>
                     <input
@@ -98,43 +105,14 @@ function Register() {
                     />
                     <span className="input__error-message">{errorPassword}</span>
                 </div>
-                {/* <Input
-                    discription="Имя"
-                    type="text" 
-                    name="username"
-                    placeholder="Имя"
-                    // value="Виталий"
-                    required
-                    minLength="2"
-                    maxLength="30"
-                />
-                <Input
-                    discription="E-mail"
-                    type="email" 
-                    name="useremail"
-                    placeholder="pochta@yandex.ru"
-                    // value="pochta@yandex.ru"
-                    required
-                    minLength="2"
-                    maxLength="30"
-                />
-                <Input
-                    discription="Пароль"
-                    type="password" 
-                    name="password"
-                    placeholder="Пароль"
-                    // value="Пароль"
-                    required
-                    spantext="Что-то пошло не так..."
-                /> */}
+                <div className="register__footer">
+                    <button type="submit" className="register__btn button" disabled={!(isValidEmail && isValidPassword && isValidName)}>Зарегистрироваться</button>
+                    <p className="register__signin">
+                        Уже зарегистрированы?
+                        <Link to="/signin" className="register__signin-link">Войти</Link>
+                    </p>
+                </div>
             </form>
-            <div className="register__footer">
-                <button type="submit" className="register__btn button" disabled={!(isValidEmail && isValidPassword && isValidName)}>Зарегистрироваться</button>
-                <p className="register__signin">
-                    Уже зарегистрированы?
-                    <Link to="/signin" className="register__signin-link">Войти</Link>
-                </p>
-            </div>
         </div>
     )
 }

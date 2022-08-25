@@ -5,29 +5,58 @@ import search from "../../../images/icon-search.svg";
 import InfoTooltip from "../../InfoTooltip/InfoTooltip";
 
 function SearchForm(props) {
+    console.log('SearchForm props ', props);
+    
     const [film, setFilm] = useState("");
     const [isValidFilm, setIsValidFilm] = useState(false);
     const [errorFilm, setErrorFilm] = useState("");
     const [openPopup, setOpenPopup] = useState(false);
+    // const [checked, setChecked] = useState(false);
 
     function handleChangeInput(evt) {
         const input = evt.target;
         setFilm(input.value);
         setIsValidFilm(input.validity.valid);
-        console.log('isValid ', isValidFilm);
+        props.onChange(input.value);
+    }
+    function handleChangeCheckbox(evt){
+       props.onChecked(evt.target.checked);
     }
     function handleClose(){
         setOpenPopup(false);
     }
-    function handleSubmit(e) {
-        e.preventDefault();
+    function handleSubmit(evt) {
+        evt.preventDefault();
         if(!(isValidFilm)) {
             setOpenPopup(true);
             setErrorFilm("Нужно ввести ключевое слово");
         } else {
             props.onSearchFormClick();
+            props.onSubmit();
         }
     }
+   
+    // function handleFilmSearch() {
+   
+    //    console.log('ok');
+    //    props.films.forEach(function(newFilm) {
+    //        const names = newFilm.name;
+    //        console.log('names ', newFilm);
+    //    })
+
+        // получаем массив названий фильмов
+        // const filmNames = Array.from(props.films, ({name}) => name);
+        // console.log('filmNames ', filmNames);
+
+    //     console.log('props.films ', props.films);
+    //     const newFilms = props.films.filter(function(e) {
+    //         return e.name.includes(film);
+    //     })
+    //     console.log('newFilms ', newFilms);
+    // }
+
+    
+  
 
     return (
         <section className="movies__search">
@@ -52,7 +81,12 @@ function SearchForm(props) {
                 </form>
                 <div className="movies__shorts-conteiner">
                     <div className="movies__checkbox-group">
-                        <input type="checkbox" className="movies__checkbox" id="movies__checkbox"/>
+                        <input
+                            type="checkbox"
+                            className="movies__checkbox"
+                            id="movies__checkbox"
+                            onChange={handleChangeCheckbox}
+                            />
                         <label htmlFor="movies__checkbox" className="movies__checkbox-label"></label>
                     </div>
                     <p className="movies__shorts">Короткометражки</p>

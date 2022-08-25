@@ -43,6 +43,10 @@
     color: white;   
     margin-top: 157px;  
 }
+.register__btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
 .register__signin {
     margin: 0;
     margin-top: 14px;

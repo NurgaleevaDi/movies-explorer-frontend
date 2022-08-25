@@ -18,7 +18,7 @@ function Header(props) {
     // function handleLogged() {
     //     setIsLoggedIn(false);
     // }
-    console.log(isLoggedIn);
+    // console.log(isLoggedIn);
 
     return(
         <header className={`header ${props.className}`}>
