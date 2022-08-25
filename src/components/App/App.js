@@ -1,5 +1,5 @@
-import { Route, Switch } from 'react-router-dom';
-import { useState } from 'react';
+import { Route, Switch, useHistory } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 import MoviesApi from '../../utils/MoviesApi.js'
 
@@ -17,6 +17,7 @@ import * as auth from "../../utils/auth.js"
 
 
 function App() {
+  const history = useHistory();
   const [films, setFilms] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [searchFilms, setSearchFilms] = useState([]);
@@ -30,12 +31,67 @@ function App() {
     return auth
       .register(email, password, name)
       .then(() => {
-        console.log('Register ok')
+        // setStatusMessage("Вы успешно зарегистрировались!");
+        // setStatusImg(true);
+        // history.push("/sign-in");
+        history.push("/signin");
       })
       .catch((err) => {
         console.log(err);
       });
   }
+  function handleLogin(email, password) {
+    return auth
+      .authorize(email, password)
+      .then((data) => {
+        console.log('login data ', data.token);
+        if (data.token) {
+          localStorage.setItem('jwt', data.token);
+          tokenCheck();
+        }
+      })
+      .catch((err) => {
+        // setStatusOpenPopup(true);
+        // setStatusMessage("Что-то пошло не так! Попробуйте еще раз.");
+        console.log(err);
+      })
+  }
+  function tokenCheck() {
+    if (localStorage.getItem('jwt')) {
+      let jwt = localStorage.getItem('jwt');
+      auth
+        .getContent(jwt)
+        .then((res) => {
+          if (res) {
+            console.log('res login ', res);
+            setLoggedIn(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    };
+  }
+
+  useEffect(() => {
+    if(loggedIn) {
+      history.push("/");
+    }
+  }, [loggedIn]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   function handleGetMovies() {
     MoviesApi.getMovies()
@@ -110,7 +166,9 @@ function App() {
             />
           </Route>
           <Route path="/signin">
-            <Login />
+            <Login
+            handleLogin={handleLogin} 
+            />
           </Route>
           <Route path="/navigation">
             <Navigation />

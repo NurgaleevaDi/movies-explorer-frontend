@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import logo from "../../images/logo.svg"
 // import Input from "../Input/Input";
 
-function Login() {
+function Login(props) {
     const [email, setEmail] = useState("");
     const [isValidEmail, setIsValidEmail] = useState(false);
     const [errorEmail, setErrorEmail] = useState("");
@@ -32,6 +32,13 @@ function Login() {
             setErrorPassword("");
         }
     }
+    function handleSubmit(evt) {
+        evt.preventDefault();
+        // props.handleLogin(email, password).catch((err) => {
+        //     console.log(err);
+        // });
+        props.handleLogin(email, password);
+    }
    
     return(
         <div className="register">
@@ -41,7 +48,7 @@ function Login() {
                 </Link>
                 <p className="register__title">Рады видеть!</p>
             </div>
-            <form className="register__form">
+            <form className="register__form" onSubmit={handleSubmit}>
                 <div className="input__container">
                     <p className="input__disription">E-mail</p>
                     <input
@@ -70,39 +77,20 @@ function Login() {
                     />
                     <span className="input__error-message">{errorPassword}</span>
                 </div>
-                {/* <Input 
-                    discription="E-mail"
-                    type="email" 
-                    name="useremail"
-                    placeholder="pochta@yandex.ru"
-                    // value={value1 || ""}
-                    // onChange={handleInput1Change}
-                    required
-                    minLength="2"
-                    maxLength="30"
-                />
-                 <Input
-                    discription="Пароль"
-                    type="password" 
-                    name="password"
-                    placeholder="Пароль"
-                    // value=""
-                    required
-                />  */}
-            </form>
-            <div className="register__footer">
-                <button 
-                    type="submit" 
-                    className="register__btn button"
-                    disabled={!(isValidEmail && isValidPassword)}
-                    >
+                <div className="register__footer">
+                    <button 
+                        type="submit" 
+                        className="register__btn button"
+                        disabled={!(isValidEmail && isValidPassword)}
+                        >
                         Войти
-                </button>
-                <p className="register__signin">
-                    Еще не зарегистрированы?
-                    <Link to="/signup" className="register__signin-link">Регистрация</Link>
-                </p>
-            </div>
+                    </button>
+                    <p className="register__signin">
+                        Еще не зарегистрированы?
+                        <Link to="/signup" className="register__signin-link">Регистрация</Link>
+                    </p>
+                </div>
+            </form>
         </div>
     )
 }
