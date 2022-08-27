@@ -2,7 +2,14 @@ export const BASE_URL = 'http://localhost:3000';
 
 function checkResponse(res) {
     console.log('res ', res);
-    return res.ok ? res.json() : Promise.reject(`'Ошибка': ${res.status}`);
+    // return res.ok ? res.json() : Promise.reject(`'Ошибка': ${res.status}`);
+    if (res.ok) {
+        return res.json();
+    }
+        return res.json()
+        .then((data) => {
+           throw new Error(data.message);
+        })
 };
 
 // регистрация пользователя

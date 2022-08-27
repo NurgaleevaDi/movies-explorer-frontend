@@ -2,10 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../images/logo.svg";
-// import Input from "../Input/Input";
 
 function Register(props) {
-    // console.log('Register props ', props);
     const [name, setName] = useState("");
     const [isValidName, setIsValidName] = useState(false);
     const [errorName, setErrorName] = useState("");
@@ -26,6 +24,7 @@ function Register(props) {
             setErrorName("");
         }
     }
+
     function handleEmailChange(evt) {
         const input = evt.target;
         setEmail(input.value);
@@ -36,6 +35,7 @@ function Register(props) {
             setErrorEmail("");
         }
     }
+
     function handlePasswordChange(evt) {
         const input = evt.target;
         console.log(input);
@@ -47,7 +47,7 @@ function Register(props) {
             setErrorPassword("");
         }
     }
-    console.log('data ', name);
+
     function handleSubmit(evt) {
         evt.preventDefault();
         props.handleRegister(email, password, name);
@@ -106,6 +106,7 @@ function Register(props) {
                     <span className="input__error-message">{errorPassword}</span>
                 </div>
                 <div className="register__footer">
+                    <span className="register__error-message">{props.errorRegister}</span>
                     <button type="submit" className="register__btn button" disabled={!(isValidEmail && isValidPassword && isValidName)}>Зарегистрироваться</button>
                     <p className="register__signin">
                         Уже зарегистрированы?

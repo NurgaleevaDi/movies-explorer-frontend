@@ -24,6 +24,7 @@ function Movies(props) {
                 button="header__invisible-button"
                 openMenu={handleOpenMenu}
                 textColor="navigation__menu-navlink_black"
+                isLoggedIn={props.loggedIn}
             />
             <SearchForm
                 onSearchFormClick={props.onSearchFormClick}

@@ -11,9 +11,11 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Navigation from '../Navigation/Navigation';
 import PageNotFound from '../PageNotFound/PageNotFound';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
+//import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
 
 import * as auth from "../../utils/auth.js"
+import mainApi from '../../utils/MainApi.js';
+import { CurrentUserContext } from '../../context/CurrentUserContext.js';
 
 
 function App() {
@@ -26,34 +28,43 @@ function App() {
   const [checkedBox, setCheckedBox] = useState(false);
 
   const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
+  const [errorLogin, setErrorLogin] = useState('');
+  const [errorRegister, setErrorRegister] = useState('');
 
   function handleRegister(email, password, name) {
     return auth
       .register(email, password, name)
-      .then(() => {
+      .then((res) => {
+        console.log(res);
+        // if (res.status === 409) {
+        //   console.log('res'res);
+        //   setErrorRegister('Пользователь с таким email уже существует.')
+        // }
         // setStatusMessage("Вы успешно зарегистрировались!");
         // setStatusImg(true);
         // history.push("/sign-in");
-        history.push("/signin");
+        history.push("/movies");
       })
       .catch((err) => {
-        console.log(err);
+        setErrorRegister(err.message);
+        // console.log(err);
       });
   }
   function handleLogin(email, password) {
     return auth
       .authorize(email, password)
       .then((data) => {
-        console.log('login data ', data.token);
         if (data.token) {
           localStorage.setItem('jwt', data.token);
           tokenCheck();
+          history.push("/movies");
         }
       })
       .catch((err) => {
+        setErrorLogin(err.message);
         // setStatusOpenPopup(true);
         // setStatusMessage("Что-то пошло не так! Попробуйте еще раз.");
-        console.log(err);
       })
   }
   function tokenCheck() {
@@ -63,7 +74,6 @@ function App() {
         .getContent(jwt)
         .then((res) => {
           if (res) {
-            console.log('res login ', res);
             setLoggedIn(true);
           }
         })
@@ -73,9 +83,47 @@ function App() {
     };
   }
 
+  function handleSignOut() {
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+    history.push('/signin');
+  }
+
+  function handleUpdateUser(currentUser) {
+    const token = localStorage.getItem('jwt');
+    console.log('currentUser ',currentUser)
+    mainApi.profileEdit(currentUser, token)
+   
+      .then((data) => {
+        
+        setCurrentUser(data.data);
+        console.log('data Update ', data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  useEffect(() => {
+    tokenCheck();
+  }, []); //уточнить для чего
+
   useEffect(() => {
     if(loggedIn) {
       history.push("/");
+    }
+  }, [loggedIn]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      const token = localStorage.getItem('jwt');
+      mainApi.getUserData(token)
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     }
   }, [loggedIn]);
 
@@ -138,47 +186,58 @@ function App() {
   
  
   return (
-    <body> 
-      <div className="page"> 
-        <Switch>
-          <ProtectedRoute exact path="/" loggedIn={loggedIn}>
-            <Main />
-          </ProtectedRoute>
-          <Route path="/movies">
-            <Movies
-              onSearchFormClick={handleGetMovies}
-              films={films}
-              searchFilms={searchFilms}
-              onChange={handleSearchInputChange}
-              onSubmit={handleFilmSearch}
-              onChecked={handleChangeCheckbox}
-            />
-          </Route>
-          <Route path="/saved-movies">
-            <SavedMovies />
-          </Route>
-          <Route path="/profile">
-            <Profile />
-          </Route>
-          <Route path="/signup">
-            <Register
-              handleRegister={handleRegister}
-            />
-          </Route>
-          <Route path="/signin">
-            <Login
-            handleLogin={handleLogin} 
-            />
-          </Route>
-          <Route path="/navigation">
-            <Navigation />
-          </Route>
-          <Route path="*">
-            <PageNotFound />
-          </Route>
-        </Switch>
-      </div>
-    </body>
+    <CurrentUserContext.Provider value={currentUser}>
+      <body> 
+        <div className="page"> 
+          <Switch>
+            <Route exact path="/" loggedIn={loggedIn}>
+              <Main
+                loggedIn={loggedIn}
+                handleSignOut={handleSignOut}
+              />
+            </Route>
+            <Route path="/movies">
+              <Movies
+                onSearchFormClick={handleGetMovies}
+                films={films}
+                searchFilms={searchFilms}
+                onChange={handleSearchInputChange}
+                onSubmit={handleFilmSearch}
+                onChecked={handleChangeCheckbox}
+                loggedIn={loggedIn}
+              />
+            </Route>
+            <Route path="/saved-movies">
+              <SavedMovies />
+            </Route>
+            <Route path="/profile">
+              <Profile
+                handleSignOut={handleSignOut}
+                onUpdateUser={handleUpdateUser}
+              />
+            </Route>
+            <Route path="/signup">
+              <Register
+                handleRegister={handleRegister}
+                errorRegister={errorRegister}
+              />
+            </Route>
+            <Route path="/signin">
+              <Login
+                handleLogin={handleLogin}
+                errorLogin={errorLogin}
+              />
+            </Route>
+            <Route path="/navigation">
+              <Navigation />
+            </Route>
+            <Route path="*">
+              <PageNotFound />
+            </Route>
+          </Switch>
+        </div>
+      </body>
+    </CurrentUserContext.Provider>
   );
 }
 

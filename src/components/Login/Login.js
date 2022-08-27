@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../images/logo.svg"
-// import Input from "../Input/Input";
 
 function Login(props) {
     const [email, setEmail] = useState("");
@@ -22,6 +21,7 @@ function Login(props) {
             setErrorEmail("");
         }
     }
+
     function handlePasswordChange(evt) {
         const input = evt.target;
         setPassword(input.value);
@@ -32,6 +32,7 @@ function Login(props) {
             setErrorPassword("");
         }
     }
+
     function handleSubmit(evt) {
         evt.preventDefault();
         // props.handleLogin(email, password).catch((err) => {
@@ -78,6 +79,7 @@ function Login(props) {
                     <span className="input__error-message">{errorPassword}</span>
                 </div>
                 <div className="register__footer">
+                    <span className="register__error-message">{props.errorLogin}</span>
                     <button 
                         type="submit" 
                         className="register__btn button"

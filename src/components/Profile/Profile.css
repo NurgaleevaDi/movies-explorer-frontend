@@ -58,12 +58,18 @@
     line-height: 1.25;
     margin-bottom: 16px;
 }
-.profile__signout-link {
+.profile__btn:disabled {
+    cursor: default;
+    opacity: 0.3;
+}
+.profile__signout-btn {
     font-weight: 500;
     font-size: 12px;
     line-height: 1.25;
     color: #EE3465; 
-    text-decoration: none;
+    border: none;
+    background: none;
+
 }
 
 @media screen and (min-width: 768px) {
@@ -83,7 +89,7 @@
         font-size: 13px;
         line-height: 1.23;
     }
-    .profile__signout-link {
+    .profile__signout-btn {
         font-size: 13px;
         line-height: 1.23;
     }
