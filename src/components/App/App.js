@@ -1,7 +1,6 @@
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-
-import MoviesApi from '../../utils/MoviesApi.js'
+import { CurrentUserContext } from '../../context/CurrentUserContext.js';
 
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -10,47 +9,35 @@ import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Navigation from '../Navigation/Navigation';
-import PageNotFound from '../PageNotFound/PageNotFound';
-//import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
-
-import * as auth from "../../utils/auth.js"
-import mainApi from '../../utils/MainApi.js';
-import { CurrentUserContext } from '../../context/CurrentUserContext.js';
-
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import * as auth from '../../utils/auth.js';
+import mainApi from '../../utils/MainApi';
 
 function App() {
-  const history = useHistory();
-  const [films, setFilms] = useState([]);
-  const [searchInput, setSearchInput] = useState('');
-  const [searchFilms, setSearchFilms] = useState([]);
-  // const [searchLongFilms, setSearchLongFilms] = useState([]);
-  const [fullFilm, setFullFilm] = useState([]);
-  const [checkedBox, setCheckedBox] = useState(false);
-
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
-  const [errorLogin, setErrorLogin] = useState('');
+  const [loggedIn, setLoggedIn] = useState(undefined);
   const [errorRegister, setErrorRegister] = useState('');
+  const [errorLogin, setErrorLogin] = useState('');
+  const [currentUser, setCurrentUser] = useState('');
+  const [statusProfile, setStatusProfile] = useState('');
+  const history = useHistory();
 
+  //Регистрация
   function handleRegister(email, password, name) {
     return auth
       .register(email, password, name)
       .then((res) => {
-        console.log(res);
-        // if (res.status === 409) {
-        //   console.log('res'res);
-        //   setErrorRegister('Пользователь с таким email уже существует.')
-        // }
-        // setStatusMessage("Вы успешно зарегистрировались!");
-        // setStatusImg(true);
-        // history.push("/sign-in");
+        setLoggedIn(true);
+        setCurrentUser(res);
+        handleLogin(email, password);
         history.push("/movies");
       })
       .catch((err) => {
         setErrorRegister(err.message);
-        // console.log(err);
+        console.log(err);
       });
   }
+
+  //Авторизация
   function handleLogin(email, password) {
     return auth
       .authorize(email, password)
@@ -58,15 +45,15 @@ function App() {
         if (data.token) {
           localStorage.setItem('jwt', data.token);
           tokenCheck();
-          history.push("/movies");
+          getUserData();
         }
       })
       .catch((err) => {
         setErrorLogin(err.message);
-        // setStatusOpenPopup(true);
-        // setStatusMessage("Что-то пошло не так! Попробуйте еще раз.");
       })
   }
+
+  //Проверка токена
   function tokenCheck() {
     if (localStorage.getItem('jwt')) {
       let jwt = localStorage.getItem('jwt');
@@ -75,168 +62,110 @@ function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
+            history.push('/movies');
           }
         })
         .catch((err) => {
           console.log(err);
         })
-    };
+    }
   }
 
+  //Получение данных пользователя после успешной авторизации и сохранение их в currentUser
+  function getUserData() {
+    const token=localStorage.getItem('jwt');
+    mainApi.getUserData(token)
+      .then((data) => {
+        setCurrentUser(data);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  //Выход
   function handleSignOut() {
     localStorage.removeItem('jwt');
+    localStorage.removeItem('keyWord');
+    localStorage.removeItem('isShorts');
+    localStorage.removeItem('filteredMovies');
     setLoggedIn(false);
     history.push('/signin');
   }
 
-  function handleUpdateUser(currentUser) {
+  //Редактирование профиля пользователя
+  function handleUserUpdate(currentUser) {
     const token = localStorage.getItem('jwt');
-    console.log('currentUser ',currentUser)
     mainApi.profileEdit(currentUser, token)
-   
       .then((data) => {
-        
         setCurrentUser(data.data);
-        console.log('data Update ', data);
+        setStatusProfile('Информация обновлена!');
       })
       .catch((err) => {
         console.log(err);
+        setStatusProfile(err.message);
       })
+      .finally(setStatusProfile(''));
   }
+  
+  useEffect(() => {
+    getUserData();
+  }, [loggedIn]);
 
   useEffect(() => {
     tokenCheck();
-  }, []); //уточнить для чего
+  }, []);
 
-  useEffect(() => {
-    if(loggedIn) {
-      history.push("/");
-    }
-  }, [loggedIn]);
-
-  useEffect(() => {
-    if (loggedIn) {
-      const token = localStorage.getItem('jwt');
-      mainApi.getUserData(token)
-        .then((data) => {
-          setCurrentUser(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-    }
-  }, [loggedIn]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  function handleGetMovies() {
-    MoviesApi.getMovies()
-    .then((data)=> {
-      console.log('data get movies', data); 
-      setFilms(
-        data.map((data) => ({
-          name: data.nameRU,
-          src: `https://api.nomoreparties.co${data.image.url}`,
-          time: data.duration,
-          id: data.id,
-        }))
-      )
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
-
-  function handleSearchInputChange(input) {
-    setSearchInput(input); 
-  } 
-
-  function handleChangeCheckbox(checked) {
-    setCheckedBox(checked);
-    handleShortsFilm();
-  }
-  // функция отбора фильмов по названию
-  function handleFilmSearch() {
-    setSearchFilms(films.filter(function(e) {
-      return e.name.includes(searchInput);
-        })
-    )
-  }
-  function handleShortsFilm() {
-    console.log('shorts');
-    if (!checkedBox) {
-      setFullFilm(searchFilms.filter(function(e) {
-        return e.duration < 40;
-      }))
-    }
-    console.log('full', fullFilm);
-  }
-  
- 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <body> 
-        <div className="page"> 
-          <Switch>
-            <Route exact path="/" loggedIn={loggedIn}>
-              <Main
-                loggedIn={loggedIn}
-                handleSignOut={handleSignOut}
-              />
-            </Route>
-            <Route path="/movies">
-              <Movies
-                onSearchFormClick={handleGetMovies}
-                films={films}
-                searchFilms={searchFilms}
-                onChange={handleSearchInputChange}
-                onSubmit={handleFilmSearch}
-                onChecked={handleChangeCheckbox}
-                loggedIn={loggedIn}
-              />
-            </Route>
-            <Route path="/saved-movies">
-              <SavedMovies />
-            </Route>
-            <Route path="/profile">
-              <Profile
-                handleSignOut={handleSignOut}
-                onUpdateUser={handleUpdateUser}
-              />
-            </Route>
-            <Route path="/signup">
-              <Register
-                handleRegister={handleRegister}
-                errorRegister={errorRegister}
-              />
-            </Route>
-            <Route path="/signin">
-              <Login
-                handleLogin={handleLogin}
-                errorLogin={errorLogin}
-              />
-            </Route>
-            <Route path="/navigation">
-              <Navigation />
-            </Route>
-            <Route path="*">
-              <PageNotFound />
-            </Route>
-          </Switch>
-        </div>
-      </body>
+    <body> 
+      <div className="page"> 
+        <Switch>
+          <Route exact path="/">
+            <Main
+              loggedIn={loggedIn} 
+            />
+          </Route>
+          <ProtectedRoute path="/movies" loggedIn={loggedIn}>
+            <Movies
+              loggedIn={loggedIn}
+            />
+          </ProtectedRoute>
+          <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
+            <SavedMovies
+              loggedIn={loggedIn} 
+            />
+          </ProtectedRoute>
+          <ProtectedRoute path="/profile" loggedIn={loggedIn}>
+            <Profile
+              loggedIn={loggedIn}
+              handleSignOut={handleSignOut}
+              handleUserUpdate={handleUserUpdate}
+              statusProfile={statusProfile}
+            />
+          </ProtectedRoute>
+          <Route path="/signup">
+            <Register
+              handleRegister={handleRegister}
+              errorRegister={errorRegister}
+            />
+          </Route>
+          <Route path="/signin">
+            <Login
+              handleLogin={handleLogin}
+              errorLogin={errorLogin}
+            />
+          </Route>
+          <Route path="/navigation">
+            <Navigation />
+          </Route>
+          {/* используем Redirect Если пользователь посетит / 
+          или любой другой маршрут, который не определён в приложении,
+          неавторизованные пользователи будут перенаправлены на /signin*/}
+          <Route exact path="/"> 
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
+          </Route>
+        </Switch>
+      </div>
+    </body>
     </CurrentUserContext.Provider>
   );
 }

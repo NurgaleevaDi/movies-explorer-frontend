@@ -1,102 +1,93 @@
 import React from "react";
-import { useState } from "react";
-import find from "../../../images/find-button.svg";
-import search from "../../../images/icon-search.svg";
-import InfoTooltip from "../../InfoTooltip/InfoTooltip";
+import find from "../../../images/find-button.svg"
+import search from "../../../images/icon-search.svg"
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 function SearchForm(props) {
-    console.log('SearchForm props ', props);
-    
-    const [film, setFilm] = useState("");
-    const [isValidFilm, setIsValidFilm] = useState(false);
-    const [errorFilm, setErrorFilm] = useState("");
-    const [openPopup, setOpenPopup] = useState(false);
-    // const [checked, setChecked] = useState(false);
+    const [keyWord, setKeyWord] = useState("");
+    const [isValidKeyWord, setIsValidKeyWord] = useState(false);
+    const [errorKeyWord, setErrorKeyWord] = useState("");
+    const [isShorts, setIsShorts] = useState(false);
+    const location = useLocation();
 
     function handleChangeInput(evt) {
         const input = evt.target;
-        setFilm(input.value);
-        setIsValidFilm(input.validity.valid);
-        props.onChange(input.value);
+        setKeyWord(input.value);
+        setIsValidKeyWord(input.validity.valid);
     }
-    function handleChangeCheckbox(evt){
-       props.onChecked(evt.target.checked);
+
+    function handleChangeCheckbox() {
+        setIsShorts(!isShorts);
+        localStorage.setItem('isShorts', !isShorts)
+        console.log('isShorts in ChangeCheckbox ', isShorts);
+        props.handleSearch(keyWord, !isShorts);
     }
-    function handleClose(){
-        setOpenPopup(false);
-    }
+
     function handleSubmit(evt) {
         evt.preventDefault();
-        if(!(isValidFilm)) {
-            setOpenPopup(true);
-            setErrorFilm("Нужно ввести ключевое слово");
+        if (!isValidKeyWord) {
+            setErrorKeyWord("Нужно ввести ключевое слово")
         } else {
-            props.onSearchFormClick();
-            props.onSubmit();
+            localStorage.setItem('keyWord', keyWord);
+            props.handleSearch(keyWord, isShorts);
         }
     }
-   
-    // function handleFilmSearch() {
-   
-    //    console.log('ok');
-    //    props.films.forEach(function(newFilm) {
-    //        const names = newFilm.name;
-    //        console.log('names ', newFilm);
-    //    })
 
-        // получаем массив названий фильмов
-        // const filmNames = Array.from(props.films, ({name}) => name);
-        // console.log('filmNames ', filmNames);
-
-    //     console.log('props.films ', props.films);
-    //     const newFilms = props.films.filter(function(e) {
-    //         return e.name.includes(film);
-    //     })
-    //     console.log('newFilms ', newFilms);
-    // }
-
-    
-  
+    // заполняет строку поиска и состояние чекбокса значениями из localStorage
+    useEffect(() => {
+        if (location.pathname === '/movies') {
+            const savedInputValue = localStorage.getItem('keyWord');
+            const savedShorts = JSON.parse(localStorage.getItem('isShorts'));
+            if (savedInputValue) {
+                setKeyWord(savedInputValue);
+            }
+            if (savedShorts) {
+                setIsShorts(savedShorts);
+            }
+            if (savedInputValue || (savedShorts === true)) {
+                props.handleSearch(savedInputValue, savedShorts);
+            }
+        }
+    }, []);
 
     return (
         <section className="movies__search">
             <div className="movies__search-block">
                 <form className="movies__input-conteiner" onSubmit={handleSubmit} noValidate>
                     <img src={search} className="movies__img-search" alt="Иконка поиска"/>
-                    <input 
-                        type="text" 
-                        className="movies__input" 
+                    <input
+                        type="text"
+                        className="movies__input"
                         placeholder="Фильм"
                         required
-                        value={film || ""}
+                        value={keyWord || ""}
                         onChange={handleChangeInput}
                     />
                     <button 
                         className="movies__button button"
                         type="submit"
-                        disabled={!(isValidFilm)}
+                        // disabled={!isValidKeyWord}
                     >
                         <img src={find} alt="Кнопка искать"/>
                     </button>
                 </form>
+                <span className="movies__input-error">{errorKeyWord}</span>
                 <div className="movies__shorts-conteiner">
                     <div className="movies__checkbox-group">
                         <input
-                            type="checkbox"
+                            type="checkbox" 
                             className="movies__checkbox"
                             id="movies__checkbox"
                             onChange={handleChangeCheckbox}
-                            />
+                            checked={isShorts}
+                        />
                         <label htmlFor="movies__checkbox" className="movies__checkbox-label"></label>
                     </div>
                     <p className="movies__shorts">Короткометражки</p>
                 </div>
             </div>
-            <InfoTooltip
-                message={errorFilm}
-                openPopup={openPopup}
-                onClose={handleClose}
-            />
+            <span className="movies-search__error">{props.errorSearch}</span>
         </section>
     )
 }

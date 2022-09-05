@@ -2,10 +2,11 @@ import React from "react";
 import close from "../../images/close.svg";
 import icon from "../../images/icon-profile.svg";
 import { NavLink, Link } from "react-router-dom";
-import { CurrentUserContext } from "../../context/CurrentUserContext.js";
+import { CurrentUserContext } from "../../context/CurrentUserContext";
 
 function Navigation(props) {
     const currentUser = React.useContext(CurrentUserContext);
+    
     return(
         <div className={`navigation ${props.onOpen ? "opened" : ""}`}>
             <div className={`navigation__menu `}>

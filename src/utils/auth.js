@@ -1,7 +1,7 @@
 export const BASE_URL = 'http://localhost:3000';
 
 function checkResponse(res) {
-    console.log('res ', res);
+    // console.log('res ', res);
     // return res.ok ? res.json() : Promise.reject(`'Ошибка': ${res.status}`);
     if (res.ok) {
         return res.json();

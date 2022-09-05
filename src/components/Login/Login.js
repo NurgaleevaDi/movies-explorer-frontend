@@ -35,12 +35,9 @@ function Login(props) {
 
     function handleSubmit(evt) {
         evt.preventDefault();
-        // props.handleLogin(email, password).catch((err) => {
-        //     console.log(err);
-        // });
         props.handleLogin(email, password);
     }
-   
+
     return(
         <div className="register">
            <div className="register__header">
@@ -49,7 +46,7 @@ function Login(props) {
                 </Link>
                 <p className="register__title">Рады видеть!</p>
             </div>
-            <form className="register__form" onSubmit={handleSubmit}>
+            <form className="register__form register__form_login" onSubmit={handleSubmit} noValidate>
                 <div className="input__container">
                     <p className="input__disription">E-mail</p>
                     <input
@@ -80,13 +77,7 @@ function Login(props) {
                 </div>
                 <div className="register__footer">
                     <span className="register__error-message">{props.errorLogin}</span>
-                    <button 
-                        type="submit" 
-                        className="register__btn button"
-                        disabled={!(isValidEmail && isValidPassword)}
-                        >
-                        Войти
-                    </button>
+                    <button type="submit" className="register__btn button" disabled={!(isValidEmail && isValidPassword)}>Войти</button>
                     <p className="register__signin">
                         Еще не зарегистрированы?
                         <Link to="/signup" className="register__signin-link">Регистрация</Link>

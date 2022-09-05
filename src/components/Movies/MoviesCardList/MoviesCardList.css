@@ -8,6 +8,12 @@
     margin-top: 50px;
     margin-bottom: 30px;
 }
+/* .movies-cardlist__error {
+    font-size: 12px;
+    line-height: 1.2;
+    color: red;
+    margin: auto;
+} */
 
 @media screen and (min-width: 768px) {
     .movies-cardlist{

@@ -22,15 +22,8 @@
     border: none;
     border-radius: 8px;
     padding-left: 15px;
+    outline: none;
 }
-/* если введенные данные соответствуют валидации инпута атрибутами: */
-/* .input__text:valid {
-    border: 1px solid green;
-} */
-/* если введенные данные не соответствуют валидации инпута атрибутами: */
-/* .input__text:invalid {
-    border: 1px solid red;
-} */
 .input__error-message {
    align-self: flex-start;
    margin-top: 10px;
@@ -42,6 +35,6 @@
 
 @media screen and (min-width: 768px) {
     .input__container {
-        width: 396px;
+        min-width: 396px;
     }
 }

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../images/logo.svg";
 
+
 function Register(props) {
     const [name, setName] = useState("");
     const [isValidName, setIsValidName] = useState(false);
@@ -38,7 +39,6 @@ function Register(props) {
 
     function handlePasswordChange(evt) {
         const input = evt.target;
-        console.log(input);
         setPassword(input.value);
         setIsValidPassword(input.validity.valid);
         if(!isValidPassword) {
@@ -61,14 +61,14 @@ function Register(props) {
                 </Link>
                 <p className="register__title">Добро пожаловать!</p>
              </div>
-            <form className="register__form" onSubmit={handleSubmit}>
+            <form className="register__form" onSubmit={handleSubmit} noValidate>
                 <div className="input__container">
                     <p className="input__disription">Имя</p>
                     <input
                         className="input__text"
                         type="text"
                         name="username"
-                        placeholder="Диана"
+                        placeholder="Имя"
                         required
                         minLength="2"
                         maxLength="30"

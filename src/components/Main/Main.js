@@ -8,16 +8,11 @@ import Promo from "./Promo/Promo";
 import Techs from "./Techs/Techs";
 import AboutMe from "./AboutMe/AboutMe";
 
-
 function Main(props) {
     return(
         <main className="main">
-            <Header 
-                // link="/signup"
-                // name="Войти"
-                // nameLink="Регистрация"
-                invisibleBurger="header__burger-invisible"
-                handleSignOut={props.handleSignOut} 
+            <Header
+                loggedIn={props.loggedIn}
             />
             <Promo />
             <NavTab />

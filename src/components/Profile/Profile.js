@@ -36,7 +36,9 @@ function Profile(props) {
 
     function handleSubmit(evt) {
         evt.preventDefault();
-        props.onUpdateUser({ name, email });
+        const updateName = name || currentUser.name;
+        const updateEmail = email || currentUser.email;
+        props.handleUserUpdate({ updateName, updateEmail });
     }
 
     return(
@@ -44,11 +46,10 @@ function Profile(props) {
             <Header 
                 className="header_white"
                 textColor="navigation__menu-navlink_black"
-                invisible="header__invisible"
-                button="header__invisible-button"
+                loggedIn={props.loggedIn}
             />
             <h2 className="profile__title">Привет, {currentUser.name}!</h2>
-            <form className="profile__form" onSubmit={handleSubmit}>
+            <form className="profile__form" onSubmit={handleSubmit} noValidate>
                 <div className="profile__input-container">
                     <p className="profile__input-discription">Имя</p>
                     <input 
@@ -56,8 +57,7 @@ function Profile(props) {
                         type="text" 
                         name="username"
                         placeholder={currentUser.name}
-                        value={name || ""} 
-                        // required
+                        value={name || ''}
                         minLength="2"
                         maxLength="30"
                         onChange={handleNameChange}
@@ -68,28 +68,28 @@ function Profile(props) {
                     <p className="profile__input-discription">E-mail</p>
                     <input 
                         className="profile__input-text profile__input-text_email"
-                        type="email"
+                        type="text"
                         name="useremail"
-                        placeholder="E-mail"
-                        value={email || ""}
-                        // required
+                        placeholder={currentUser.email}
+                        value={email || ''}
+                        minLength="2"
+                        maxLength="30"
                         onChange={handleEmailChange}
                     />
                     <span className="input__error-message">{errorEmail}</span>
-                </div>   
-            
-            <footer className="profile__footer">
-                <button 
-                    type="submit"
-                    className="profile__btn button"
-                    disabled={!(isValidEmail || isValidName)}>
-                    Редактировать
-                </button>
-            
-                <button type="button" className="profile__signout-btn button" onClick={props.handleSignOut}>
-                    Выйти из аккаунта
-                </button>
-            </footer>
+                </div>
+                <span className="profile__error-message">{props.statusProfile}</span>
+                <footer className="profile__footer">
+                    <button 
+                        type="submit" 
+                        className="profile__btn button" 
+                        disabled={!(isValidEmail || isValidName)}>
+                        Редактировать
+                    </button>
+                    <button type="button" className="profile__signout-btn button" onClick={props.handleSignOut}>
+                        Выйти из аккаунта
+                    </button>
+                </footer>
             </form>
         </div>
     )
