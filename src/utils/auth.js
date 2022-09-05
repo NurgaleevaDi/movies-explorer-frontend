@@ -1,4 +1,5 @@
-export const BASE_URL = 'http://localhost:3000';
+// export const BASE_URL = 'https://localhost:3000';
+export const BASE_URL = 'https://api.movies.nurgaleeva.nomoredomains.xyz';
 
 function checkResponse(res) {
     // console.log('res ', res);

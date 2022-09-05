@@ -76,7 +76,8 @@ class MainApi{
 }
 
 const mainApi = new MainApi({
-    address: 'http://localhost:3000',
+    // address: 'http://localhost:3000',
+    address: 'https://api.movies.nurgaleeva.nomoredomains.xyz',
     headers: {
         'Content-Type': 'application/json',
         //'Authorization': `Bearer ${localStorage.getItem('jwt')}`
