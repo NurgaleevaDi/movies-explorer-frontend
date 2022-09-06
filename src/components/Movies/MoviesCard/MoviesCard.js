@@ -1,8 +1,9 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { MIN_PER_HOUR } from "../../../utils/constants.js";
 
 function MoviesCard(props) {
-    //console.log('MoviesCard props isSaved', props);
+    console.log('MoviesCard props isSaved', props);
     const location = useLocation();
     
     const cardLableClassName = props.isSaved
@@ -19,7 +20,7 @@ function MoviesCard(props) {
         <div className="movies-card">
             <div className="movies-card__info">
                 <h3 className="movies-card__title">{props.nameRU}</h3>
-                <p className="movies-card__time">{props.duration}</p>
+                <p className="movies-card__time">{`${Math.trunc(props.duration / MIN_PER_HOUR)}ч ${props.duration % MIN_PER_HOUR}м`}</p>
                 <div className="movies-card__lable">
                     <button
                         className={location.pathname ==='/saved-movies'
@@ -33,13 +34,15 @@ function MoviesCard(props) {
                         }>
                     </button>
                 </div>
-                <img
-                    className="movies-card__img"
-                    src={location.pathname === '/saved-movies'
+                <a href={props.trailerLink} target="_blank" rel="noreferrer">
+                    <img
+                        className="movies-card__img"
+                        src={location.pathname === '/saved-movies'
                             ? props.image
                             : `https://api.nomoreparties.co${props.image.url}`}
-                    alt="Изображение"
-                />
+                         alt="Изображение"
+                    />
+                </a>
             </div>
         </div>
     )
