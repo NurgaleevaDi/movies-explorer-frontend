@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CurrentUserContext } from "../../context/CurrentUserContext.js";
 import Header from "../Header/Header";
 
@@ -41,6 +41,11 @@ function Profile(props) {
         props.handleUserUpdate({ updateName, updateEmail });
     }
 
+    useEffect(() => {
+       setName(currentUser.name);
+       setEmail(currentUser.email);
+    }, [currentUser]);
+
     return(
         <div className="profile">
             <Header 
@@ -56,7 +61,6 @@ function Profile(props) {
                         className="profile__input-text profile__input-text_name" 
                         type="text" 
                         name="username"
-                        placeholder={currentUser.name}
                         value={name || ''}
                         minLength="2"
                         maxLength="30"
@@ -70,7 +74,7 @@ function Profile(props) {
                         className="profile__input-text profile__input-text_email"
                         type="text"
                         name="useremail"
-                        placeholder={currentUser.email}
+                        pattern="^[\w]+@[a-zA-Z]+\.[a-zA-Z]{1,3}$"
                         value={email || ''}
                         minLength="2"
                         maxLength="30"
