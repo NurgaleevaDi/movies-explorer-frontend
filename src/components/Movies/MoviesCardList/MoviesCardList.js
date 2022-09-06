@@ -14,18 +14,11 @@ import {
 function MoviesCardList(props) {
     console.log('MoviesList ', props);
     const location = useLocation();
-    const [maximumMovies, setMaximumMovies] = useState(setTemplate());
-    //const [amount, setAmount] = useState(0);
-
-    const [testMax, setTestMax] = useState(maximumMovies[0])
-    console.log('testMax ', testMax);
-    const testAmount = maximumMovies[1];
-    console.log('maximumMovies ', maximumMovies);
+    const [maximumMovies, setMaximumMovies] = useState(0);
+    const [amount, setAmount] = useState(0);
 
     function showMoreMovies() {
-      // setMaximumMovies(maximumMovies + amount);
-      console.log('test', testMax);
-      setTestMax(testMax+testAmount);
+      setMaximumMovies(maximumMovies + amount);
     };
 
     function setTemplate() {
@@ -35,21 +28,17 @@ function MoviesCardList(props) {
             setMaximumMovies(props.movies.length);
         }
         if (width >= 1280) {
-            // setMaximumMovies(MAXIMUM_MOVIES_1280);
-            // setAmount(AMOUNT_1280);
-            return [MAXIMUM_MOVIES_1280, AMOUNT_1280];
+            setMaximumMovies(MAXIMUM_MOVIES_1280);
+            setAmount(AMOUNT_1280);
         } else if (width >= 768) {
-            // setMaximumMovies(MAXIMUM_MOVIES_768);
-            // setAmount(AMOUNT_768);
-            return [MAXIMUM_MOVIES_768, AMOUNT_768];
+            setMaximumMovies(MAXIMUM_MOVIES_768);
+            setAmount(AMOUNT_768);
         } else if (width >= 320) {
-            // setMaximumMovies(MAXIMUM_MOVIES_320);
-            // setAmount(AMOUNT_320);
-            return [MAXIMUM_MOVIES_320, AMOUNT_320];
+            setMaximumMovies(MAXIMUM_MOVIES_320);
+            setAmount(AMOUNT_320);
         } else {
-            // setMaximumMovies(MAXIMUM_MOVIES_320);
-            // setAmount(AMOUNT_320);
-            return [MAXIMUM_MOVIES_320, AMOUNT_320];
+            setMaximumMovies(MAXIMUM_MOVIES_320);
+            setAmount(AMOUNT_320);
         }
     }
 
@@ -62,24 +51,18 @@ function MoviesCardList(props) {
         setTemplate();
         
         window.addEventListener('resize', handleResize);
-        // return () => {
-        //     window.removeEventListener('resize', handleResize);
-        // }
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
        
-    },[]);
-
-    // useEffect(() => {
-    //     setTestMax(maximumMovies);
-    // })
-
-   
+    },[]);   
 
     return(
         <div className="movies-list">
             <div className="movies-cardlist">
                 {props.movies.map((movie, index) => {
-                    console.log('index ', index, 'maximumMovies ', testMax);
-                    if (index < testMax) {
+                   console.log('4', movie);
+                    if (index < maximumMovies) {
                         return (
                             <MoviesCard
                                 key={movie.id || movie._id}
@@ -89,6 +72,7 @@ function MoviesCardList(props) {
                                 onRemoveMovie={props.handleRemoveMovie}
                                 savedMoviesId={props.savedMoviesId}
                                 //если в массиве id сохраненных фильмов есть id карточки, то метод indexOf вернет значение, если нет, то -1
+                                //isSaved={props.savedMoviesId.indexOf(movie.id) !== -1 }
                                 isSaved={props.savedMoviesId.indexOf(movie.id) !== -1 }
                             />
                         );
@@ -97,7 +81,7 @@ function MoviesCardList(props) {
                 }      
             )}
             </div>
-            {location.pathname === '/movies' && props.movies.length > maximumMovies[0] && (
+            {location.pathname === '/movies' && props.movies.length > maximumMovies && (
                 <div className="movies__more">
                     <button 
                         className="movies__btn-more button"

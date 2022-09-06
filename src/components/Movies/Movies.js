@@ -7,6 +7,7 @@ import SearchForm from "../Movies/SearchForm/SearchForm";
 import MoviesApi from "../../utils/MoviesApi.js";
 import Preloader from "../Preloader/Preloader";
 import mainApi from "../../utils/MainApi";
+import { CurrentUserContext } from "../../context/CurrentUserContext.js";
 
 
 function Movies(props) {
@@ -17,6 +18,7 @@ function Movies(props) {
     const [isShorts, setIsShorts] = useState(false);
     const [savedMovies, setSavedMovies] = useState([]);
     const [savedMoviesId, setSavedMoviesId] = useState([]);
+    const currentUser = React.useContext(CurrentUserContext);
 
     //фильтр фильмов
     function searchFilter(movies, keyWord, isShorts) {
@@ -48,7 +50,8 @@ function Movies(props) {
             .then((movies) => {
                     localStorage.setItem('allMovies', JSON.stringify(movies))
                     //setAllMovies([...movies]);
-                    handleCheck(keyWord, isShorts);               
+                    handleCheck(keyWord, isShorts);
+                    getSavedStatus();              
             })
             .catch((err) => {
                 setLoading(false);
@@ -138,10 +141,10 @@ function Movies(props) {
             .getFilms(token)
             .then((movies) => {
                 setSavedMovies(movies);
-                console.log('movies ', movies.data);
-                setSavedMoviesId(movies.data.map(a => a.movieId));
-               
-                console.log('savedMoviesId ', savedMoviesId);
+                //массив из сохраненных фильмов, принадлежащих текущему пользователю
+                const ownerMovies = movies.data.filter((movie) => movie.owner === currentUser._id);
+                //массив id сохраненных фильмов, принадлежащих текущему пользователю
+                setSavedMoviesId(ownerMovies.map(a => a.movieId));
             })
             .catch((err) => console.log(err));
     }
@@ -152,9 +155,17 @@ function Movies(props) {
         //console.log('movies useEffect ', movies);
         setMovies(movies || []);
         getSavedStatus();
-        console.log('savedMoviesId useEffect', savedMoviesId);
         setIsShorts(JSON.parse(localStorage.getItem('isShorts')));
     },[]);
+
+
+
+
+    // useEffect(() => {
+    //     getFilms();
+    // }, [])
+
+
 
 
     // useEffect(() => {
