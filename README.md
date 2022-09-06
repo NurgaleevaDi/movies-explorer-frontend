@@ -15,3 +15,5 @@
 **Фронтэнд/Frontend** https://movies.nurgaleeva.nomoredomains.xyz/
 
 **Макет в Figma** https://www.figma.com/file/cASM20ikAsPlTi2doec68Q/Diploma?node-id=344%3A0
+
+**Pull request https://github.com/NurgaleevaDi/movies-explorer-frontend/pull/2#issue-1362299598
