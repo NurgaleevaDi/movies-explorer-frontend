@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { MIN_PER_HOUR } from "../../../utils/constants.js";
 
 function MoviesCard(props) {
-    console.log('MoviesCard props isSaved', props);
+    //console.log('MoviesCard props isSaved', props);
     const location = useLocation();
     
     const cardLableClassName = props.isSaved
