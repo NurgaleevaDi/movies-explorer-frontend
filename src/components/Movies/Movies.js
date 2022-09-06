@@ -11,7 +11,7 @@ import { CurrentUserContext } from "../../context/CurrentUserContext.js";
 
 
 function Movies(props) {
-    console.log(props);
+    //console.log(props);
     //const [allMovies, setAllMovies] = useState([]);
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);

@@ -19,9 +19,10 @@ function SearchForm(props) {
 
     function handleChangeCheckbox() {
         setIsShorts(!isShorts);
-        localStorage.setItem('isShorts', !isShorts)
-        console.log('isShorts in ChangeCheckbox ', isShorts);
         props.handleSearch(keyWord, !isShorts);
+        if (location.pathname === '/movies') {
+            localStorage.setItem('isShorts', JSON.stringify(!isShorts));
+        }
     }
 
     function handleSubmit(evt) {
@@ -29,8 +30,10 @@ function SearchForm(props) {
         if (!isValidKeyWord) {
             setErrorKeyWord("Нужно ввести ключевое слово")
         } else {
-            localStorage.setItem('keyWord', keyWord);
             props.handleSearch(keyWord, isShorts);
+            if (location.pathname === '/movies') {
+                localStorage.setItem('keyWord', keyWord);    
+            } 
         }
     }
 
