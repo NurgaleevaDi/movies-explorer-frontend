@@ -8,10 +8,12 @@ import MoviesApi from "../../utils/MoviesApi.js";
 import Preloader from "../Preloader/Preloader";
 import mainApi from "../../utils/MainApi";
 import { CurrentUserContext } from "../../context/CurrentUserContext.js";
+import { DURATION } from "../../utils/constants.js";
+import { setTemplate } from "../../utils/utils.js";
 
 
 function Movies(props) {
-    //console.log(props);
+    console.log(props);
     //const [allMovies, setAllMovies] = useState([]);
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -20,6 +22,8 @@ function Movies(props) {
     const [savedMovies, setSavedMovies] = useState([]);
     const [savedMoviesId, setSavedMoviesId] = useState([]);
     const currentUser = React.useContext(CurrentUserContext);
+
+    const [initialCount, setInitialCount] = useState(0);
 
     //фильтр фильмов
     function searchFilter(movies, keyWord, isShorts) {
@@ -35,7 +39,7 @@ function Movies(props) {
             .includes(keyWord.toLowerCase()))
         }
         if(isShorts) {
-            return filtered.filter((element) => element.duration <= 40);
+            return filtered.filter((element) => element.duration <= DURATION);
         }
         return filtered;
     }
@@ -43,7 +47,7 @@ function Movies(props) {
     //функция срабатывает при submit на поиске или чекбоксе короткометражек, 
     // фильтрует фильмы по состоянию чекбокса и ключевому слову, сохраняет в localStorage отобранные фильмы, 
    
-    function handleSearch(keyWord, isShorts) {
+    function handleSearch(keyWord, isShorts, initialCountMovies) {
         setLoading(true);
         const filteredMovies = JSON.parse(localStorage.getItem('filteredMovies'));
         if (!filteredMovies) {
@@ -52,7 +56,8 @@ function Movies(props) {
                     localStorage.setItem('allMovies', JSON.stringify(movies))
                     //setAllMovies([...movies]);
                     handleCheck(keyWord, isShorts);
-                    getSavedStatus();              
+                    getSavedStatus();            
+                    setInitialCount(initialCountMovies);
             })
             .catch((err) => {
                 setLoading(false);
@@ -82,7 +87,6 @@ function Movies(props) {
 
     //сохраняет фильмы по нажатию на ярлык карточки в mainApi
     function handleSavedMovie(film) {
-        console.log('1 ', film);
         const token = localStorage.getItem('jwt');
         //подготовка объекта фильма для записи в mainApi
         const newFilm = {};
@@ -198,6 +202,8 @@ function Movies(props) {
                 ? <Preloader />
                 : <MoviesCardList 
                     movies={movies} 
+
+                    initialCount={initialCount}
                     
                     //для сохранения фильмов
                     handleSavedMovie={handleSavedMovie}

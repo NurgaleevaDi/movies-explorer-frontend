@@ -66,6 +66,7 @@ function Register(props) {
                     <p className="input__disription">Имя</p>
                     <input
                         className="input__text"
+                        pattern="^[A-Za-zА-Яа-яЁё /s -]+$"
                         type="text"
                         name="username"
                         placeholder="Имя"

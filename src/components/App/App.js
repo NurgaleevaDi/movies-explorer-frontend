@@ -110,12 +110,19 @@ function App() {
   }
   
   useEffect(() => {
-    getUserData();
+      getUserData();   
   }, [loggedIn]);
 
   useEffect(() => {
     tokenCheck();
   }, []);
+
+  // useEffect(() => {
+  //   console.log('useEffect history ', loggedIn);
+  //   if (loggedIn) {
+  //     history.push("/");
+  //   }
+  // }, [loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

@@ -5,3 +5,4 @@ export const MAXIMUM_MOVIES_320 = 5;
 export const AMOUNT_1280 = 3;
 export const AMOUNT_768 = 2;
 export const AMOUNT_320 = 2;
+export const DURATION = 40;

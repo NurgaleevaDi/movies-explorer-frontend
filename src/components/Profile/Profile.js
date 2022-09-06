@@ -64,6 +64,7 @@ function Profile(props) {
                         value={name || ''}
                         minLength="2"
                         maxLength="30"
+                        pattern="^[A-Za-zА-Яа-яЁё /s -]+$"
                         onChange={handleNameChange}
                     />
                     <span className="input__error-message">{errorName}</span>

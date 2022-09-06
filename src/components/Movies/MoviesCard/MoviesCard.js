@@ -5,7 +5,6 @@ import { useState } from "react";
 
 function MoviesCard(props) {
     const [savedLabel, setSavedLabel] = useState(false);
-   // console.log('MoviesCard props isSaved', props);
     const location = useLocation();
     
     const cardLableClassName = props.isSaved || savedLabel
@@ -14,13 +13,11 @@ function MoviesCard(props) {
     
     function handleSavedMovie(evt) {
         props.onSavedMovie(props);
-        //setSavedLabel(true);
     }
     function handleRemoveMovie(evt) {     
         console.log('ok', props.id);
         props.onRemoveMovie(props.id || props._id);
         setSavedLabel(false);
-        
     }
 
     return(
