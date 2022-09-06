@@ -52,6 +52,7 @@ function Login(props) {
                     <input
                         className="input__text"
                         type="email"
+                        pattern="^[\w]+@[a-zA-Z]+\.[a-zA-Z]{1,3}$"
                         name="useremail"
                         placeholder="pochta@yandex.ru"
                         required

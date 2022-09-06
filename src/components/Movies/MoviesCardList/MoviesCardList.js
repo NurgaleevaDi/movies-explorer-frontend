@@ -68,6 +68,10 @@ function MoviesCardList(props) {
        
     },[]);
 
+    // useEffect(() => {
+    //     setTestMax(maximumMovies);
+    // })
+
    
 
     return(
