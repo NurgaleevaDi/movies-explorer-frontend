@@ -12,6 +12,7 @@ import Navigation from '../Navigation/Navigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import * as auth from '../../utils/auth.js';
 import mainApi from '../../utils/MainApi';
+import NotFound from '../NotFound/NotFound.js';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(undefined);
@@ -46,6 +47,7 @@ function App() {
           localStorage.setItem('jwt', data.token);
           tokenCheck();
           getUserData();
+          history.push("/movies");
         }
       })
       .catch((err) => {
@@ -62,7 +64,8 @@ function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
-            history.push('/movies');
+            //history.push('/movies');
+            //history.push('/');
           }
         })
         .catch((err) => {
@@ -88,7 +91,7 @@ function App() {
     localStorage.removeItem('isShorts');
     localStorage.removeItem('filteredMovies');
     setLoggedIn(false);
-    history.push('/signin');
+    history.push('/');
   }
 
   //Редактирование профиля пользователя
@@ -157,11 +160,15 @@ function App() {
           <Route path="/navigation">
             <Navigation />
           </Route>
+         
           {/* используем Redirect Если пользователь посетит / 
           или любой другой маршрут, который не определён в приложении,
           неавторизованные пользователи будут перенаправлены на /signin*/}
           <Route exact path="/"> 
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
+          </Route>
+          <Route path="*">
+            <NotFound />
           </Route>
         </Switch>
       </div>
