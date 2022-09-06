@@ -12,7 +12,7 @@ import {
 } from "../../../utils/constants.js";
 
 function MoviesCardList(props) {
-    console.log('MoviesList ', props);
+    //console.log('MoviesList ', props);
     const location = useLocation();
     const [maximumMovies, setMaximumMovies] = useState(0);
     const [amount, setAmount] = useState(0);
@@ -61,7 +61,7 @@ function MoviesCardList(props) {
         <div className="movies-list">
             <div className="movies-cardlist">
                 {props.movies.map((movie, index) => {
-                   console.log('4', movie);
+
                     if (index < maximumMovies) {
                         return (
                             <MoviesCard
@@ -72,7 +72,6 @@ function MoviesCardList(props) {
                                 onRemoveMovie={props.handleRemoveMovie}
                                 savedMoviesId={props.savedMoviesId}
                                 //если в массиве id сохраненных фильмов есть id карточки, то метод indexOf вернет значение, если нет, то -1
-                                //isSaved={props.savedMoviesId.indexOf(movie.id) !== -1 }
                                 isSaved={props.savedMoviesId.indexOf(movie.id) !== -1 }
                             />
                         );

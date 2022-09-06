@@ -11,6 +11,7 @@ import { CurrentUserContext } from "../../context/CurrentUserContext.js";
 
 
 function Movies(props) {
+    console.log(props);
     //const [allMovies, setAllMovies] = useState([]);
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -81,7 +82,7 @@ function Movies(props) {
 
     //сохраняет фильмы по нажатию на ярлык карточки в mainApi
     function handleSavedMovie(film) {
-        console.log(film);
+        console.log('1 ', film);
         const token = localStorage.getItem('jwt');
         //подготовка объекта фильма для записи в mainApi
         const newFilm = {};
@@ -102,9 +103,11 @@ function Movies(props) {
                 token
             )
             .then((movie) => {
+                getSavedStatus();
                 //setIsSaved(true);
-                console.log('movie for id', movie);
-                setSavedMoviesId(movies.map(a => a.movieId));
+                // console.log('movie for id', movie);
+                // setSavedMoviesId(movie.map(a => a.movieId));
+                // console.log('1', setSavedMoviesId);
                 setSavedMovies(movie);
                 
                 console.log('newSavedFilms ', movie);
@@ -115,23 +118,20 @@ function Movies(props) {
     }
 
     //удаляет сохраненные раннее фильмы из mainApi
-    function handleRemoveMovie(_id) {
+    function handleRemoveMovie(id) {
         const token = localStorage.getItem('jwt');
-        console.log('id из card ', _id);
-        console.log('savedMovies из бека ', savedMovies);
-        // ищем id карточки с фильмом, по которой кликнули для удаления (сравниваем массивы фильмов из localStorage и из mainApi)
-        const cardRemove = savedMovies.data.find(element => element.movieId === _id) ;
-        console.log('movieId для удаления ', cardRemove);
+        //собираем массив из отфильтрованных фильмов, которые сохранил текущий пользователь
+        const ownerMovies = savedMovies.data.filter((movie) => movie.owner === currentUser._id);
+        //из найденного массива находим карточку для удаления по ее movieId
+        const cardRemove = ownerMovies.find(element => element.movieId === id);
         mainApi
             .deleteFilm(cardRemove._id, token)
             .then((res) => {
-                console.log(movies);
-                setSavedMoviesId(movies.data.map(a => a.movieId));
+                getSavedStatus();
             })
             .catch((err) => {
                 console.log(err);
             })
-
     }
 
     //делает активными ярлыки к сохраненным фильмам
@@ -201,7 +201,7 @@ function Movies(props) {
                     
                     //для сохранения фильмов
                     handleSavedMovie={handleSavedMovie}
-                    handleRemoveSavedMovie={handleRemoveMovie}
+                    handleRemoveMovie={handleRemoveMovie}
                     savedMoviesId={savedMoviesId}
                     //isSaved={isSaved}
                     />

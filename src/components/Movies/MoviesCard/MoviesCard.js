@@ -1,19 +1,26 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { MIN_PER_HOUR } from "../../../utils/constants.js";
+import { useState } from "react";
 
 function MoviesCard(props) {
-    //console.log('MoviesCard props isSaved', props);
+    const [savedLabel, setSavedLabel] = useState(false);
+   // console.log('MoviesCard props isSaved', props);
     const location = useLocation();
     
-    const cardLableClassName = props.isSaved
+    const cardLableClassName = props.isSaved || savedLabel
                                 ? "movies-card__btn button movies-card__btn_active"
                                 : "movies-card__btn button";
+    
     function handleSavedMovie(evt) {
         props.onSavedMovie(props);
+        //setSavedLabel(true);
     }
-    function handleRemoveMovie(evt) {
+    function handleRemoveMovie(evt) {     
+        console.log('ok', props.id);
         props.onRemoveMovie(props.id || props._id);
+        setSavedLabel(false);
+        
     }
 
     return(
@@ -29,7 +36,7 @@ function MoviesCard(props) {
                         type="button"
                         onClick={location.pathname === '/saved-movies'
                             ? handleRemoveMovie
-                            :  props.isSaved 
+                            :  props.isSaved
                                 ? handleRemoveMovie : handleSavedMovie 
                         }>
                     </button>

@@ -10,7 +10,7 @@ import { CurrentUserContext } from "../../context/CurrentUserContext";
 import Preloader from "../Preloader/Preloader";
 
 function SavedMovies(props) {
-    console.log(props);
+   // console.log(props);
     const currentUser = React.useContext(CurrentUserContext);
     const [savedMovies, setSavedMovies] = useState([]);
     const [savedMoviesId, setSavedMoviesId] = useState([]);
