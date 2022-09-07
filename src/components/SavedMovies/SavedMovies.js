@@ -10,13 +10,14 @@ import { CurrentUserContext } from "../../context/CurrentUserContext";
 import Preloader from "../Preloader/Preloader";
 
 function SavedMovies(props) {
-   // console.log(props);
+    console.log(props);
     const currentUser = React.useContext(CurrentUserContext);
     const [savedMovies, setSavedMovies] = useState([]);
     const [savedMoviesId, setSavedMoviesId] = useState([]);
     const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
     const [errorSearch, setErrorSearch] = useState('');
     const [loading, setLoading] = useState(false);
+    const [addition, setAddition] = useState(0);
     
     function getFilms() {
         const token = localStorage.getItem('jwt');
@@ -46,6 +47,7 @@ function SavedMovies(props) {
     }
 
     function handleSearch(keyWord, isShorts) {
+        setAddition(0);
         setLoading(true);
         console.log('savedMovies ', savedMovies, 'keaword', keyWord);
         searchFilter(savedMovies, keyWord, isShorts);
@@ -72,6 +74,10 @@ function SavedMovies(props) {
     useEffect(()=> {
             getFilms();
     }, [])
+
+    function showMoreMovies() {
+        setAddition(addition+1);
+    }
  
     return(
         <div className="movies movies_saved">
@@ -90,6 +96,8 @@ function SavedMovies(props) {
                 movies={filteredSavedMovies}
                 savedMoviesId={savedMoviesId}
                 handleRemoveMovie={handleRemoveMovie}
+                addition={addition}
+                showMoreMovies={showMoreMovies}
                 />
             }
             <Footer />

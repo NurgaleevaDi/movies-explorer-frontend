@@ -12,7 +12,7 @@ import {
 } from "../../../utils/constants.js";
 
 function MoviesCardList(props) {
-    //console.log('MoviesList ', props);
+    console.log('MoviesList ', props);
     const location = useLocation();
     const [maximumMovies, setMaximumMovies] = useState(0);
     const [amount, setAmount] = useState(0);
@@ -23,7 +23,7 @@ function MoviesCardList(props) {
         const width = window.innerWidth;
 
         if  (location.pathname === '/saved-movies') {
-            setMaximumMovies(props.movies.length);
+            maxMovies = props.movies.length;
         }
         if (width >= 1280) {
             setMaximumMovies(MAXIMUM_MOVIES_1280);
@@ -61,8 +61,23 @@ function MoviesCardList(props) {
                 {props.movies.map((movie, index) => {
 
                     maxMovies = maximumMovies + amount * props.addition;
-
-                    if (index < maxMovies) {
+                    console.log("1 ", maxMovies);
+                    if (location.pathname === "/movies") {
+                        if (index < maxMovies) {
+                            return (
+                                <MoviesCard
+                                    key={movie.id || movie._id}
+                                    {...movie}
+                                    //для сохранения фильмов
+                                    onSavedMovie={props.handleSavedMovie}
+                                    onRemoveMovie={props.handleRemoveMovie}
+                                    savedMoviesId={props.savedMoviesId}
+                                    //если в массиве id сохраненных фильмов есть id карточки, то метод indexOf вернет значение, если нет, то -1
+                                    isSaved={props.savedMoviesId.indexOf(movie.id) !== -1 }
+                                />
+                            );
+                        }
+                    } else {
                         return (
                             <MoviesCard
                                 key={movie.id || movie._id}
