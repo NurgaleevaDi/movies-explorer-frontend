@@ -10,7 +10,7 @@ function NotFound() {
                 <p className="notfound__status">404</p>
                 <p className="notfound__message">Страница не найдена</p>
             </div>
-            <button className="notfound__link button" onClick={()=> history.goBack}>Назад</button>
+            <button className="notfound__link button" onClick={()=> history.goBack()}>Назад</button>
         </div>
     )
 }
