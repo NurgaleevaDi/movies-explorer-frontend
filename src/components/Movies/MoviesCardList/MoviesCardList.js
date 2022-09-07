@@ -1,44 +1,111 @@
 import React from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
-import film1 from "../../../images/film1.jpg";
-import film2 from "../../../images/film2.jpg";
-import film3 from "../../../images/film3.jpg";
-import film4 from "../../../images/film4.jpg";
-import film5 from "../../../images/film5.jpg";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import {
+    MAXIMUM_MOVIES_1280,
+    MAXIMUM_MOVIES_768,
+    MAXIMUM_MOVIES_320,
+    AMOUNT_1280,
+    AMOUNT_768,
+    AMOUNT_320
+} from "../../../utils/constants.js";
 
-function MoviesCardList() {
+function MoviesCardList(props) {
+    console.log('MoviesList ', props);
+    const location = useLocation();
+    const [maximumMovies, setMaximumMovies] = useState(0);
+    const [amount, setAmount] = useState(0);
+
+    let maxMovies = 0;
+
+    function setTemplate() {
+        const width = window.innerWidth;
+
+        if  (location.pathname === '/saved-movies') {
+            maxMovies = props.movies.length;
+        }
+        if (width >= 1280) {
+            setMaximumMovies(MAXIMUM_MOVIES_1280);
+            setAmount(AMOUNT_1280);
+        } else if (width >= 768) {
+            setMaximumMovies(MAXIMUM_MOVIES_768);
+            setAmount(AMOUNT_768);
+        } else if (width >= 320) {
+            setMaximumMovies(MAXIMUM_MOVIES_320);
+            setAmount(AMOUNT_320);
+        } else {
+            setMaximumMovies(MAXIMUM_MOVIES_320);
+            setAmount(AMOUNT_320);
+        }
+    }
+
+    function handleResize() {
+        setTimeout(() => {
+            setTemplate();
+        }, 500);
+    }
+    useEffect(() => {
+        setTemplate();
+        
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+       
+    },[]);   
+
     return(
-        <div className="movies-cardlist">
-            <MoviesCard 
-                name="33 слова о дизайне"
-                time="1ч 47м"
-                src={film1}
-                lableClassName="movies-card__btn"
-            />
-             <MoviesCard 
-                name="33 слова о дизайне"
-                time="1ч 47м"
-                src={film2}
-                lableClassName="movies-card__btn"
-            />
-             <MoviesCard 
-                name="33 слова о дизайне"
-                time="1ч 47м"
-                src={film3}
-                lableClassName="movies-card__btn movies-card__btn_active"
-            />
-             <MoviesCard 
-                name="33 слова о дизайне"
-                time="1ч 47м"
-                src={film4}
-                lableClassName="movies-card__btn"
-            />
-             <MoviesCard 
-                name="33 слова о дизайне"
-                time="1ч 47м"
-                src={film5}
-                lableClassName="movies-card__btn movies-card__btn_active"
-            />
+        <div className="movies-list">
+            <div className="movies-cardlist">
+                {props.movies.map((movie, index) => {
+
+                    maxMovies = maximumMovies + amount * props.addition;
+                    console.log("1 ", maxMovies);
+                    if (location.pathname === "/movies") {
+                        if (index < maxMovies) {
+                            return (
+                                <MoviesCard
+                                    key={movie.id || movie._id}
+                                    {...movie}
+                                    //для сохранения фильмов
+                                    onSavedMovie={props.handleSavedMovie}
+                                    onRemoveMovie={props.handleRemoveMovie}
+                                    savedMoviesId={props.savedMoviesId}
+                                    //если в массиве id сохраненных фильмов есть id карточки, то метод indexOf вернет значение, если нет, то -1
+                                    isSaved={props.savedMoviesId.indexOf(movie.id) !== -1 }
+                                />
+                            );
+                        }
+                    } else {
+                        return (
+                            <MoviesCard
+                                key={movie.id || movie._id}
+                                {...movie}
+                                //для сохранения фильмов
+                                onSavedMovie={props.handleSavedMovie}
+                                onRemoveMovie={props.handleRemoveMovie}
+                                savedMoviesId={props.savedMoviesId}
+                                //если в массиве id сохраненных фильмов есть id карточки, то метод indexOf вернет значение, если нет, то -1
+                                isSaved={props.savedMoviesId.indexOf(movie.id) !== -1 }
+                            />
+                        );
+                    }
+                    return null;
+                }      
+            )}
+            </div>
+            {location.pathname === '/movies' && props.movies.length > maxMovies && (
+                <div className="movies__more">
+                    <button 
+                        className="movies__btn-more button"
+                        type="button"
+                        onClick={props.showMoreMovies}>
+                        Еще
+                    </button>
+                </div>
+            )}
+            
         </div>
     )
 }
