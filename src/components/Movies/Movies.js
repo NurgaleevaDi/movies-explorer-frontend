@@ -9,8 +9,6 @@ import Preloader from "../Preloader/Preloader";
 import mainApi from "../../utils/MainApi";
 import { CurrentUserContext } from "../../context/CurrentUserContext.js";
 import { DURATION } from "../../utils/constants.js";
-import { setTemplate } from "../../utils/utils.js";
-
 
 function Movies(props) {
     console.log(props);
@@ -22,13 +20,10 @@ function Movies(props) {
     const [savedMovies, setSavedMovies] = useState([]);
     const [savedMoviesId, setSavedMoviesId] = useState([]);
     const currentUser = React.useContext(CurrentUserContext);
-
-    const [initialCount, setInitialCount] = useState(0);
+    const [addition, setAddition] = useState(0);
 
     //фильтр фильмов
     function searchFilter(movies, keyWord, isShorts) {
-        //console.log('keyWord in filter ', keyWord, 'isShorts in filter ', isShorts);
-        //console.log('movies in filter ', movies);
         if (!movies) {
             return [];  
         }
@@ -47,7 +42,8 @@ function Movies(props) {
     //функция срабатывает при submit на поиске или чекбоксе короткометражек, 
     // фильтрует фильмы по состоянию чекбокса и ключевому слову, сохраняет в localStorage отобранные фильмы, 
    
-    function handleSearch(keyWord, isShorts, initialCountMovies) {
+    function handleSearch(keyWord, isShorts) {
+        setAddition(0);
         setLoading(true);
         const filteredMovies = JSON.parse(localStorage.getItem('filteredMovies'));
         if (!filteredMovies) {
@@ -57,7 +53,6 @@ function Movies(props) {
                     //setAllMovies([...movies]);
                     handleCheck(keyWord, isShorts);
                     getSavedStatus();            
-                    setInitialCount(initialCountMovies);
             })
             .catch((err) => {
                 setLoading(false);
@@ -162,8 +157,9 @@ function Movies(props) {
         setIsShorts(JSON.parse(localStorage.getItem('isShorts')));
     },[]);
 
-
-
+    function showMoreMovies() {
+        setAddition(addition+1);
+    }
 
     // useEffect(() => {
     //     getFilms();
@@ -202,13 +198,12 @@ function Movies(props) {
                 ? <Preloader />
                 : <MoviesCardList 
                     movies={movies} 
-
-                    initialCount={initialCount}
-                    
+                    addition={addition}
                     //для сохранения фильмов
                     handleSavedMovie={handleSavedMovie}
                     handleRemoveMovie={handleRemoveMovie}
                     savedMoviesId={savedMoviesId}
+                    showMoreMovies={showMoreMovies}
                     //isSaved={isSaved}
                     />
             }

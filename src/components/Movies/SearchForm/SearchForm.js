@@ -3,7 +3,6 @@ import find from "../../../images/find-button.svg"
 import search from "../../../images/icon-search.svg"
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { setTemplate } from "../../../utils/utils.js";
 
 function SearchForm(props) {
     const [keyWord, setKeyWord] = useState("");
@@ -11,8 +10,6 @@ function SearchForm(props) {
     const [errorKeyWord, setErrorKeyWord] = useState("");
     const [isShorts, setIsShorts] = useState(false);
     const location = useLocation();
-
-    const [initialCountMovies, setInitialCountMovies] = useState(0);
 
     function handleChangeInput(evt) {
         const input = evt.target;
@@ -28,15 +25,12 @@ function SearchForm(props) {
         }
     }
 
-    function handleSubmit(evt) {
-         
+    function handleSubmit(evt) { 
         evt.preventDefault();
-        setInitialCountMovies(setTemplate());
-        console.log(initialCountMovies);
         if (!isValidKeyWord) {
             setErrorKeyWord("Нужно ввести ключевое слово")
         } else {
-            props.handleSearch(keyWord, isShorts, initialCountMovies);
+            props.handleSearch(keyWord, isShorts);
            
             if (location.pathname === '/movies') {
                 localStorage.setItem('keyWord', keyWord);    

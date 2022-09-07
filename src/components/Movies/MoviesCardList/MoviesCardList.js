@@ -17,9 +17,7 @@ function MoviesCardList(props) {
     const [maximumMovies, setMaximumMovies] = useState(0);
     const [amount, setAmount] = useState(0);
 
-    function showMoreMovies() {
-      setMaximumMovies(maximumMovies + amount);
-    };
+    let maxMovies = 0;
 
     function setTemplate() {
         const width = window.innerWidth;
@@ -62,7 +60,9 @@ function MoviesCardList(props) {
             <div className="movies-cardlist">
                 {props.movies.map((movie, index) => {
 
-                    if (index < maximumMovies) {
+                    maxMovies = maximumMovies + amount * props.addition;
+
+                    if (index < maxMovies) {
                         return (
                             <MoviesCard
                                 key={movie.id || movie._id}
@@ -80,13 +80,12 @@ function MoviesCardList(props) {
                 }      
             )}
             </div>
-            {location.pathname === '/movies' && props.movies.length > maximumMovies && (
+            {location.pathname === '/movies' && props.movies.length > maxMovies && (
                 <div className="movies__more">
                     <button 
                         className="movies__btn-more button"
                         type="button"
-                        // onClick={showMoreMovies}>
-                        onClick={showMoreMovies}>
+                        onClick={props.showMoreMovies}>
                         Еще
                     </button>
                 </div>
